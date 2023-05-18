@@ -1,22 +1,45 @@
 import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { TodoItem } from "../Components/TodoItem";
-import { getIssues } from "../api/getIssues";
 import ListGroup from "react-bootstrap/ListGroup";
+import { useAppSelector, useAppDispatch } from "../redux/hooks";
+// import { TodoItem } from "../Components/TodoItem";
+import { getDone, getTodo } from "../redux/operations/boardOperations";
+// import { repoUrl } from "../redux/reducer/repoSlice";
+import { setCurrent, setInProgres, setTodo } from "../redux/reducer/boardSlice";
+
+interface Item {
+  id: string;
+}
+
+interface Current {
+  board: any;
+  item: {
+    id: string;
+  };
+}
 
 export const MainPage = () => {
-  const [todo, setTodo] = useState<any>([]);
-  const [inProgress, setInProgress] = useState<any>([]);
-  const [done, setDone] = useState<any>([]);
+  // const [todo, setTodo] = useState<any>([]);
+  // const [inProgress, setInProgress] = useState<any>([]);
+  // const [done, setDone] = useState<any>([]);
   const [currentBoard, setCurrentBoard] = useState<any>(null);
   const [currentItem, setCurrentItem] = useState<any>(null);
 
+  const repo = useAppSelector((state) => state.repo.repoURL);
+  const todo = useAppSelector((state) => state.boards.boards.todo);
+  const inProgress = useAppSelector((state) => state.boards.boards.inProgress);
+  const done = useAppSelector((state) => state.boards.boards.done);
+  const current: Current = useAppSelector(
+    (state) => state.boards.boards.current
+  );
+
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    Promise.all([getIssues("open"), getIssues("closed")]).then((data) => {
-      setTodo([...data[0]]);
-      setDone([...data[1]]);
-    });
-  }, []);
+    if (repo.length < 1) return;
+    dispatch(getDone(repo));
+    dispatch(getTodo(repo));
+  }, [dispatch, repo]);
 
   const dragOverHandler = (e: any) => {
     e.preventDefault();
@@ -38,47 +61,41 @@ export const MainPage = () => {
   };
 
   const dragStartHandler = (e: any, board: any, item: any) => {
-    setCurrentBoard(board);
-    setCurrentItem(item);
+    dispatch(setCurrent({ item: item, board: board }));
   };
 
   const dropHandler = (e: any, board: any, item: any) => {
     e.preventDefault();
     e.target.style.background = "none";
     e.target.style.border = "none";
-    if (currentBoard === "done") return alert("Sorry, it's done");
+    if (current.board === "done") return alert("Sorry, it's done");
 
     //DELETE--------------------------------
     const dragIndexInProgress = inProgress.findIndex(
-      (i: any) => i.id === currentItem.id
+      (i: any) => i.id === current.item.id
     );
-    setInProgress((prev: any) => {
-      const copy = [...prev];
-      copy.splice(dragIndexInProgress, 1);
-      return copy;
-    });
+    const copy = [...inProgress];
+    copy.splice(dragIndexInProgress, 1);
+    dispatch(setInProgres(copy));
+    // dispatch(setTodo(copy));
+
     //ADD--------------------------------
     switch (board) {
       case "inProgress":
         const dropIndexInProgress = inProgress.findIndex(
           (i: any) => i.id === item.id
         );
-        setInProgress((prev: any) => {
-          const copy = [...prev];
-          copy.splice(dropIndexInProgress, 0, currentItem);
-          return copy;
-        });
+        const copy: Item[] = [...inProgress];
+        copy.splice(dropIndexInProgress, 0, current.item);
+        dispatch(setInProgres(copy));
         break;
       case "done":
-        if (currentBoard === "todo")
+        if (current.board === "todo")
           return alert("Sorry,only after in progress");
-
         const dropIndexDone = done.findIndex((i: any) => i.id === item.id);
-        setDone((prev: any) => {
-          const copy = [...prev];
-          copy.splice(dropIndexDone, 0, currentItem);
-          return copy;
-        });
+        const copyTodo: Item[] = [...done];
+        copyTodo.splice(dropIndexDone, 0, current.item);
+        dispatch(setInProgres(copyTodo));
         break;
       default:
         alert(`We hope that you will return to this issues`);
@@ -91,21 +108,20 @@ export const MainPage = () => {
     if (item.includes("list-group-item")) {
       return;
     }
-    if (currentBoard === "done") return alert("Sorry, it's done");
-
+    if (current.board === "done") return alert("Sorry, it's done");
     e.target.style.background = "none";
     e.target.style.border = "none";
-    setInProgress((prev: any) => [...prev, currentItem]);
-    const copy = [...todo];
-    const idx = copy.findIndex((i: any) => i.id === currentItem.id);
+    dispatch(setInProgres([...inProgress, current.item]));
+    const copy: Item[] = [...todo];
+    const idx = copy.findIndex((i: any) => i.id === current.item.id);
     copy.splice(idx, 1);
-    setTodo(copy);
+    dispatch(setTodo(copy));
   };
 
   return (
     <Container className="d-flex justify-content-around">
       <ListGroup className="w-25 border">
-        {todo.map((i: any) => (
+        {todo?.map((i: any) => (
           <ListGroup.Item
             key={i.id}
             className="m-2 border list-group-item"
@@ -143,7 +159,7 @@ export const MainPage = () => {
       </ListGroup>
 
       <ListGroup className="w-25 border">
-        {done.map((i: any) => (
+        {done?.map((i: any) => (
           <ListGroup.Item
             key={i.id}
             className="m-2 border list-group-item"
