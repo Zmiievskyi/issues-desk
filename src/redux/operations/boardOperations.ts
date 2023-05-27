@@ -1,14 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getIssues } from "../../api/getIssues";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getIssuesApi } from "../../api/getIssues";
+import { getRepoApi } from "../../api/getRepo";
 
 export const getDone = createAsyncThunk(
   "issues/fetchIsDone",
   async (repo: Array<string>) => {
     const [owner, repoName] = repo;
-    
-    const response = await getIssues(owner, repoName, 'closed');
-    // The value we return becomes the `fulfilled` action payload
-    
+    const response = await getIssuesApi(owner, repoName, 'closed');
     return response;
   }
 );
@@ -16,8 +14,16 @@ export const getTodo = createAsyncThunk(
   "issues/fetchTodo",
   async (repo: Array<string>) => {
     const [owner, repoName] = repo;
-    const response = await getIssues(owner, repoName, 'open');
-    // The value we return becomes the `fulfilled` action payload
+    const response = await getIssuesApi(owner, repoName, 'open');
+    return response;
+  }
+);
+
+export const setRepository = createAsyncThunk(
+  "issues/fetchRepository",
+  async (repo: Array<string>) => {
+    const [owner, repoName] = repo;
+    const response = await getRepoApi(owner, repoName);
     return response;
   }
 );

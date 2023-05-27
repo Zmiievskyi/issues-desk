@@ -3,6 +3,7 @@ import { repoReducer, RepoState, setRepo } from "./repoSlice";
 describe('counter reducer', () => {
   const initialState: RepoState = {
     repoURL: ["facebook", "react"],
+    repository: { },
   };
   it('should handle initial state', () => {
     expect(repoReducer(undefined, { type: "unknown" })).toEqual({

@@ -1,19 +1,22 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+
 import "./App.css";
 
-import { Layout } from "./Layout/Layout";
+import { Layout } from "./layout/Layout";
 // import GlobalStyle from "./GlobalStyle";
-import { MainPage } from "./Pages/MainPage";
+import { IssuesBoard } from './pages/IssuesBoard';
 
 const App: React.FC = () => {
+
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<MainPage />} />
-          <Route path="main" element={<MainPage />} />
+          <Route index element={<IssuesBoard />} />
+          <Route path="main" element={<IssuesBoard />} />
         </Route>
         <Route path="*" element={<div>404</div>} />
       </Routes>

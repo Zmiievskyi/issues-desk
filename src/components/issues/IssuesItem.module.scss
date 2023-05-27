@@ -1,0 +1,48 @@
+.paper_card {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 28px;
+  padding: 20px;
+  margin: 20px;
+
+  width: 350px;
+}
+
+.pencil_border {
+  position: relative;
+  border: none;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.pencil_border::before {
+  content: "";
+  position: absolute;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  top: 2px;
+  left: 2px;
+  transform: rotate(-2deg);
+  z-index: 1;
+}
+
+
+.pencil_border::after {
+  content: "";
+  position: absolute;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  top: 2px;
+  left: 2px;
+  transform: rotate(2deg);
+  z-index: 2;
+}
+
+.pencil_border::before,
+.pencil_border::after {
+  background-image: linear-gradient(45deg, transparent 45%, #333 45%, #333 55%, transparent 55%), 
+                    linear-gradient(45deg, transparent 45%, #333 45%, #333 55%, transparent 55%);
+  background-repeat: repeat;
+  background-size: 8px 8px;
+  border-radius: 4px;
+}
