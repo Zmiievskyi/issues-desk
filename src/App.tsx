@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import "./App.css";
 
 import { Layout } from "./layout/Layout";
-// import GlobalStyle from "./GlobalStyle";
 import { IssuesBoard } from './pages/IssuesBoard';
 
 const App: React.FC = () => {
