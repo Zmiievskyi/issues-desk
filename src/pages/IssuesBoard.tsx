@@ -57,7 +57,7 @@ export const IssuesBoard = () => {
         style={{ display: "flex", justifyContent: "space-around" }}
       >
         <DragDropContext onDragEnd={onDragEnd}>
-          {boards[0].items.length && <IssuesList boards={boards} />}
+          {repoRef.id ? <IssuesList boards={boards} />: null}
         </DragDropContext>
       </div>
   );
