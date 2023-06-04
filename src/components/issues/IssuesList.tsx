@@ -39,7 +39,7 @@ export function IssuesList() {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                <h3 className="bg-white w-100 py-3">{title}</h3>
+                <h3 className="bg-white w-100 py-3 text-center">{title}</h3>
                 {!statusRef.isLoading ? (
                   items.map(({ id, title }, index) => (
                     <IssuesItem key={id} id={id} title={title} index={index} />

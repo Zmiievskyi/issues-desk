@@ -1,9 +1,7 @@
 import { RepoSearch } from "./RepoSearch";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { RepoDiscribe } from "./RepoDiscribe";
 import { Container } from "react-bootstrap";
-import { useEffect } from "react";
-import { setRepository } from "../../redux/operations/repOperations";
 
 export const Header = () => {
   const repoRef: any = useAppSelector((state) => state.repo.repository);
