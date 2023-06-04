@@ -34,6 +34,13 @@ export const boardSlice = createSlice({
     setBoards: (state, { payload }: PayloadAction<Board[]>) => {
       state.boards = [...payload];
     },
+    clearBoards: (state, { payload }: PayloadAction<Board[]>) => {
+      state.boards = [
+        { id: 1, title: "ToDo", items: [] },
+        { id: 2, title: "In Progress", items: [] },
+        { id: 3, title: "Done", items: [] },
+      ];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,12 +63,11 @@ export const boardSlice = createSlice({
         state.boards[2].items = [...payload];
       })
       .addCase(getDone.rejected, (state) => {
-        state.status.isLoading = false;
+        // state.status.isLoading = false;
         state.status.isError = true;
       });
-      
   },
 });
 
-export const { setBoards } = boardSlice.actions;
+export const { setBoards, clearBoards } = boardSlice.actions;
 export const boardReducer = boardSlice.reducer;

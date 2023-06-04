@@ -10,6 +10,7 @@ export function IssuesItem({
   index: number;
   title: string;
 }) {
+  
   return (
     <Draggable key={id} draggableId={id.toString()} index={index}>
       {(provided) => (

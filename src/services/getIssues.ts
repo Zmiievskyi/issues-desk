@@ -15,6 +15,7 @@ export const getIssuesApi = (owner: string, repo: string, token:string, status: 
         .then((response) => response.json())
         .then((data) => resolve(data))
         .catch((error) => reject(error));
-    }, 1000); // Замедление выполнения на 1 секунду
+    }, 0);
+    
   });
 };
