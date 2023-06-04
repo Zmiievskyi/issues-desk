@@ -44,8 +44,16 @@ export function IssuesList() {
               >
                 <h3 className="bg-white w-100 py-3 text-center">{title}</h3>
                 {!statusRef.isLoading ? (
-                  items.map(({ id, title }, index) => (
-                    <IssuesItem key={id} id={id} title={title} index={index} />
+                  items.map(({ id, title, created_at, comments, user }, index) => (
+                    <IssuesItem
+                      key={id}
+                      id={id}
+                      title={title}
+                      index={index}
+                      created_at={created_at}
+                      comments={comments}
+                      user={user.login}
+                    />
                   ))
                 ) : (
                   <p>
