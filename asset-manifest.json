@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/issues-desk/static/css/main.cbc00f74.css",
-    "main.js": "/issues-desk/static/js/main.3c56c9c9.js",
+    "main.js": "/issues-desk/static/js/main.47e30c43.js",
     "static/css/596.2910056c.chunk.css": "/issues-desk/static/css/596.2910056c.chunk.css",
-    "static/js/596.bb1e5c56.chunk.js": "/issues-desk/static/js/596.bb1e5c56.chunk.js",
+    "static/js/596.1dac9bc9.chunk.js": "/issues-desk/static/js/596.1dac9bc9.chunk.js",
     "static/js/787.3fa0fe53.chunk.js": "/issues-desk/static/js/787.3fa0fe53.chunk.js",
-    "static/js/810.ac7ac126.chunk.js": "/issues-desk/static/js/810.ac7ac126.chunk.js",
+    "static/js/360.c4656822.chunk.js": "/issues-desk/static/js/360.c4656822.chunk.js",
     "index.html": "/issues-desk/index.html",
     "main.cbc00f74.css.map": "/issues-desk/static/css/main.cbc00f74.css.map",
-    "main.3c56c9c9.js.map": "/issues-desk/static/js/main.3c56c9c9.js.map",
+    "main.47e30c43.js.map": "/issues-desk/static/js/main.47e30c43.js.map",
     "596.2910056c.chunk.css.map": "/issues-desk/static/css/596.2910056c.chunk.css.map",
-    "596.bb1e5c56.chunk.js.map": "/issues-desk/static/js/596.bb1e5c56.chunk.js.map",
+    "596.1dac9bc9.chunk.js.map": "/issues-desk/static/js/596.1dac9bc9.chunk.js.map",
     "787.3fa0fe53.chunk.js.map": "/issues-desk/static/js/787.3fa0fe53.chunk.js.map",
-    "810.ac7ac126.chunk.js.map": "/issues-desk/static/js/810.ac7ac126.chunk.js.map"
+    "360.c4656822.chunk.js.map": "/issues-desk/static/js/360.c4656822.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cbc00f74.css",
-    "static/js/main.3c56c9c9.js"
+    "static/js/main.47e30c43.js"
   ]
 }
