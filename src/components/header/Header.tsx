@@ -1,18 +1,19 @@
 import { RepoSearch } from "./RepoSearch";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { RepoDiscribe } from "./RepoDiscribe";
 import { Container } from "react-bootstrap";
+import { useEffect } from "react";
+import { setRepository } from "../../redux/operations/repOperations";
 
 export const Header = () => {
-  const repo:any = useAppSelector((state) => state.repo.repository);
+  const repoRef: any = useAppSelector((state) => state.repo.repository);
 
   return (
-    <>
+    <header>
       <Container className="d-flex flex-column p-0">
         <RepoSearch />
-        {repo.id && <RepoDiscribe repo={repo} />}
+        {repoRef.data.full_name && <RepoDiscribe repo={repoRef.data} />}
       </Container>
-      
-    </>
+    </header>
   );
 };

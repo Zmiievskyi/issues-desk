@@ -1,29 +1,20 @@
-import { useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getDone, getTodo } from "../redux/operations/boardOperations";
 import { setBoards } from "../redux/reducer/boardSlice";
 import { IssuesList } from "../components/issues/IssuesList";
+import { Container } from "react-bootstrap";
 
 export const IssuesBoard = () => {
-  const repoRef: any = useAppSelector((state) => state.repo.repository);
-  const boards: { id: number; title: string; items: any[] }[] = useAppSelector(
-    (state) => state.boards.boards
-  );
+  const tokenRef: any = useAppSelector((state) => state.repo.token);
+  const boardsRef: { id: number; title: string; items: any[] }[] =
+    useAppSelector((state) => state.boards.boards);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!repoRef.full_name) return;
-    const url = repoRef.full_name.split('/')
-    dispatch(getDone(url));
-    dispatch(getTodo(url));
-  }, [dispatch, repoRef.full_name]);
 
   const onDragEnd = (result: any) => {
     if (!result.destination) return;
 
-    const newBoardState = boards.map((board) => {
+    const newBoardState = boardsRef.map((board) => {
       if (board.title === result.source.droppableId) {
         const copyBoard = [...board.items];
         const dragItem: any[] = copyBoard.splice(result.source.index, 1);
@@ -34,11 +25,10 @@ export const IssuesBoard = () => {
         return { ...board, items: copyBoard };
       }
       if (board.title === result.destination.droppableId) {
-        const copyDragBoard: any = boards.find(
+        const copyDragBoard: any = boardsRef.find(
           (b) => b.title === result.source.droppableId
         )?.items;
         const dragItem = [...copyDragBoard].splice(result.source.index, 1);
-
         const copyDropBoard = [...board.items];
         copyDropBoard.splice(result.destination.index, 0, dragItem[0]);
 
@@ -52,13 +42,12 @@ export const IssuesBoard = () => {
   };
 
   return (
-      <div
-        className="App"
-        style={{ display: "flex", justifyContent: "space-around" }}
-      >
+    <main>
+      <Container className="d-flex" style={{justifyContent: 'space-around'}}>
         <DragDropContext onDragEnd={onDragEnd}>
-          {repoRef.id ? <IssuesList boards={boards} />: null}
+          {tokenRef ? <IssuesList /> : null}
         </DragDropContext>
-      </div>
+      </Container>
+    </main>
   );
 };

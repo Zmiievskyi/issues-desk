@@ -1,13 +1,17 @@
-import { repoReducer, RepoState, setRepo } from "./repoSlice";
+import { repoReducer, RepoState } from "./repoSlice";
 
 describe('counter reducer', () => {
   const initialState: RepoState = {
-    repoURL: ["facebook", "react"],
-    repository: { },
+    token: '',
+    repository: {
+      adress: [],
+      data: {}
+    },
   };
   it('should handle initial state', () => {
     expect(repoReducer(undefined, { type: "unknown" })).toEqual({
-      repoURL: ["facebook", "react"],
+      token:'',
+      repository: ["facebook", "react"],
     });
   });
 

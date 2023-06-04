@@ -1,33 +1,36 @@
+import  { useEffect } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector,useAppDispatch } from "../../redux/hooks";
 import { IssuesItem } from "../issues/IssuesItem";
+import { getDone, getTodo } from "../../redux/operations/boardOperations";
 import Style from "./IssuesList.module.scss";
+import { setRepository } from "../../redux/operations/repOperations";
 
-interface Item {
-  id: number;
-  title: string;
-}
+export function IssuesList() {
 
-interface Board {
-  id: number;
-  title: string;
-  items: Item[];
-}
-
-interface ItemsProps {
-  boards: Board[];
-}
-
-export function IssuesList({ boards }: ItemsProps) {
+  const repoRef:any = useAppSelector((state) => state.repo.repository);
+  const tokenRef = useAppSelector((state) => state.repo.token);
+  const boardsRef: { id: number; title: string; items: any[] }[] =
+    useAppSelector((state) => state.boards.boards);
   const statusRef: { isLoading: boolean; isError: boolean } = useAppSelector(
     (state) => state.boards.status
   );
 
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const url = [...repoRef.adress];
+    url.splice(2,1,tokenRef.toString());
+    dispatch(getDone(url));
+    dispatch(getTodo(url));
+    dispatch(setRepository(url));
+  }, [repoRef.adress, tokenRef, dispatch]);
+
   return (
     <>
-      {boards?.map(({ title, items }, index) => (
+      {boardsRef?.map(({ title, items }, index) => (
         <SkeletonTheme key={index} baseColor=" rgb(175, 173, 188)" highlightColor="#444">
           <Droppable key={index} droppableId={title}>
             {(provided: DroppableProvided) => (

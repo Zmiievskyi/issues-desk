@@ -1,36 +1,60 @@
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setRepository } from "../../redux/operations/boardOperations";
 import Style from "./Header.module.scss";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setRepository } from "../../redux/operations/repOperations";
+import { setToken, setAdress } from "../../redux/reducer/repoSlice";
+import { AuthModal } from "../../features/AuthModal";
 
 export const RepoSearch = () => {
+  const [isModalOpen, setIsModalOpen] = useState(0);
+  const [rerender, setRerender] = useState(false);
+  const [gitUrl, setGitUrl] = useState('')
+
   const dispatch = useAppDispatch();
+
+  const tokenRef: string = useAppSelector((state) => state.repo.token);
   const statusRef: { isLoading: boolean; isError: boolean } = useAppSelector(
     (state) => state.boards.status
   );
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) dispatch(setToken(token));
+  }, [dispatch]);
 
   const validateInput = (input: string): boolean => {
     const regex = /^https:\/\/github.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/;
     return regex.test(input);
   };
 
-  const formDataHandler = (e: any) => {
+  const formSubmitHandler = (e: any) => {
     e.preventDefault();
-    if (!validateInput(e.target[0].value)) {
+    setRerender(!rerender);
+    if (!validateInput(gitUrl)) {
       alert("Invalid URL");
       return;
     }
-    const url = e.target[0].value;
-    const urlArr = url.split("/");
+    const urlArr = gitUrl.split("/");
     const repo = urlArr[urlArr.length - 1];
     const owner = urlArr[urlArr.length - 2];
-    const payload: string[] = [owner, repo];
-    dispatch(setRepository(payload));
+    const payload: any = [owner, repo, tokenRef];
+    console.log(payload);
+    
+    dispatch(setAdress(payload));
+
+    if (!tokenRef) {
+      setIsModalOpen((prev) => prev + 1);
+      return;
+    }
+  
+
+   
   };
 
   return (
-    <Form className="container d-flex p-3 w-100" onSubmit={formDataHandler}>
+    <Form className="container d-flex p-3 w-100" onSubmit={formSubmitHandler}>
       <Form.Group
         className="me-2 w-75"
         controlId="formBasicEmail"
@@ -41,6 +65,7 @@ export const RepoSearch = () => {
           type="text"
           placeholder="Enter repo URL"
           style={{ borderRadius: "0px", borderColor: "black" }}
+          onChange={(e) => setGitUrl(e.target.value)}
         />
       </Form.Group>
       <Button
@@ -53,6 +78,7 @@ export const RepoSearch = () => {
       >
         {statusRef.isLoading ? "Loading…" : "Load issues"}
       </Button>
+      <AuthModal modalHandler={isModalOpen} url={gitUrl}/>
     </Form>
   );
 };

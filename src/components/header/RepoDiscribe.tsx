@@ -3,7 +3,8 @@ export const RepoDiscribe = ({ repo }: any) => {
   return (
     <div className="d-flex p-3 align-items-center">
       <div style={{margin: '0 20px 0 0'}}><h3>{repo.full_name}</h3></div>
-      <div className='d-flex'><svg
+      <div className='d-flex'>
+        <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
         height="20"
@@ -15,7 +16,8 @@ export const RepoDiscribe = ({ repo }: any) => {
       </svg>
      
       <div className="ms-2">{starsCount}K</div>
-      <i className="ms-2">Stars</i></div>
+      <i className="ms-2">Stars</i>
+      </div>
     </div>
   );
 };
